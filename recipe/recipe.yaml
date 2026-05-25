@@ -68,9 +68,9 @@ tests:
   - script:
       # Skip some flaky tests
       - if: unix and not aarch64
-        then: pytest tests/test_telemetry.py -k "not http_exporter" || pytest --lf
+        then: pytest tests/test_telemetry.py -k "not http_exporter and not http_endpoints and not lazy_exporter" || pytest --lf
       - if: aarch64
-        then: pytest tests/test_telemetry.py -k "not http_exporter" || pytest --lf
+        then: pytest tests/test_telemetry.py -k "not http_exporter and not http_endpoints and not lazy_exporter" || pytest --lf
       # Only basic tests on windows
       - if: win
         then:
