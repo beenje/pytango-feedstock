@@ -1,0 +1,47 @@
+diff --git a/tango/test_context.py b/tango/test_context.py
+index 5f271e1b..0401216b 100644
+--- a/tango/test_context.py
++++ b/tango/test_context.py
+@@ -585,7 +585,7 @@ class MultiDeviceTestContext:
+             db.put_device_attribute_property(device_name, properties_to_save)
+         try:
+             validated_db = Database(self.db)
+-        except DevFailed:
++        except DevFailed as exc:
+             with open(self.db) as f:
+                 content = f.read()
+             raise RuntimeError(
+@@ -593,7 +593,7 @@ class MultiDeviceTestContext:
+                 f"Check device properties (empty list or str?): "
+                 f"{device_prop_info}.\n"
+                 f"Problematic file has content:\n{content}"
+-            ) from None
++            ) from exc
+         return validated_db
+ 
+     def delete_db(self):
+@@ -639,20 +639,20 @@ class MultiDeviceTestContext:
+         try:
+             self._wait_until_port_is_known()
+             self._wait_until_startup_status_is_known()
+-        except RuntimeError:
++        except RuntimeError as exc:
+             if self.thread.is_alive():
+                 raise RuntimeError(
+                     "The server appears to be stuck at initialization. Check stdout/stderr for more information."
+-                ) from None
++                ) from exc
+             elif hasattr(self.thread, "exitcode"):
+                 raise RuntimeError(
+                     f"The server process stopped with exitcode {self.thread.exitcode}. "
+                     f"Check stdout/stderr for more information."
+-                ) from None
++                ) from exc
+             else:
+                 raise RuntimeError(
+                     "The server stopped without reporting. Check stdout/stderr for more information."
+-                ) from None
++                ) from exc
+ 
+         if self._startup_exception:
+             raise self._startup_exception
