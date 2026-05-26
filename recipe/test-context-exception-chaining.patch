@@ -74,12 +74,3 @@ index 5f271e1b..d96f5b23 100644
  
          if self._startup_exception:
              raise self._startup_exception
-@@ -828,7 +832,7 @@ class DeviceTestContext(MultiDeviceTestContext):
-         db=None,
-         host=None,
-         port=0,
--        debug=3,
-+        debug=5,
-         process=False,
-         daemon=False,
-         timeout=None,
